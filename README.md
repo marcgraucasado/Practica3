@@ -116,8 +116,8 @@ void loop() {
 }
 ```
 
+FUNCIONAMIENTO
 
-####FUNCIONAMIENTO
 En esta segunda parte de la práctica, vamos a utilizar la librería BluetoothSerial.h, que nos permitirá crear variables de tipo BluetoothSerial. Estas variables incluyen funciones que facilitan la conexión Bluetooth y permiten enviar y recibir mensajes entre el microcontrolador (MP) y un dispositivo conectado, creando un chat básico.
 
 Primero, incluimos la librería y declaramos la variable SerialBT de tipo BluetoothSerial. Luego, en el void setup(), inicializamos el puerto serie. Utilizando la función .begin de la librería, nuestro MP creará una red Bluetooth que llamaremos "ESP32 Marc".

@@ -91,4 +91,35 @@ delay(100);
 
 
 ### Práctica B: Comunicación bluetooth con el móvil
+## CÓDIGO:
 
+```cpp
+#include "BluetoothSerial.h"
+BluetoothSerial SerialBT;
+
+void setup() {
+ Serial.begin(115200);
+ SerialBT.begin("ESP32 Marc"); 
+ Serial.println("The device started, now you can pair it with bluetooth!");
+}
+
+void loop() {
+ if (Serial.available()) {
+   SerialBT.write(Serial.read());
+ }
+ if (SerialBT.available()) {
+   Serial.write(SerialBT.read());
+ }
+ delay(20);
+}
+```
+
+
+FUNCIONAMIENTO
+En esta segunda parte de la práctica, vamos a utilizar la librería BluetoothSerial.h, que nos permitirá crear variables de tipo BluetoothSerial. Estas variables incluyen funciones que facilitan la conexión Bluetooth y permiten enviar y recibir mensajes entre el microcontrolador (MP) y un dispositivo conectado, creando un chat básico.
+
+Primero, incluimos la librería y declaramos la variable SerialBT de tipo BluetoothSerial. Luego, en el void setup(), inicializamos el puerto serie. Utilizando la función .begin de la librería, nuestro MP creará una red Bluetooth que llamaremos "ESP32 Marc".
+
+En el void loop, tenemos dos if que se ejecutan independientemente. Ambos cumplen la misma función, pero uno se activa si el puerto serie del MP está operativo, y el otro, si lo está el puerto serie del dispositivo conectado. Cuando estas condiciones se cumplen, el puerto serie del MP escribe lo que lee del puerto serie del dispositivo conectado y viceversa. De este modo, si envío un mensaje desde mi dispositivo, se mostrará en el puerto serie del MP, y si envío un mensaje desde el MP, se mostrará en el puerto serie del dispositivo, creando un chat rudimentario similar a una versión inicial de WhatsApp.
+
+En la práctica, logramos establecer una conexión Bluetooth entre el MP y nuestros móviles. Usando la aplicación Serial Bluetooth Terminal, pudimos enviar mensajes tanto desde nuestros móviles al MP como del MP a nuestros móviles.

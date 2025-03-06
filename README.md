@@ -4,7 +4,7 @@
 
 ### Práctica A: Generación de una Página Web  
 
-### CÓDIGO:  
+#### CÓDIGO:  
 
 ```cpp
 #include <WiFi.h>
@@ -69,9 +69,9 @@ const char* ssid = "Iphone de Marc"; // Enter your SSID here
 const char* password = "12345678"; // Enter your Password here
 ```
 
--Creamos un objeto WebServer y se define una ruta. Esta se maneja con la función ```cpp handle_root(). ```
+-Creamos un objeto WebServer y se define una ruta. Esta se maneja con la función ```handle_root(). ```
 
--La función handle_root() se llama cuando se accede al servidor web. Esta envía una respuesta, que en este caso será la página web.
+-La función ```handle_root()``` se llama cuando se accede al servidor web. Esta envía una respuesta, que en este caso será la página web.
 
 SALIDA POR EL TERMINAL
 
@@ -93,7 +93,7 @@ delay(100);
 
 
 ### Práctica B: Comunicación bluetooth con el móvil
-## CÓDIGO:
+#### CÓDIGO:
 
 ```cpp
 #include "BluetoothSerial.h"
@@ -117,7 +117,7 @@ void loop() {
 ```
 
 
-FUNCIONAMIENTO
+####FUNCIONAMIENTO
 En esta segunda parte de la práctica, vamos a utilizar la librería BluetoothSerial.h, que nos permitirá crear variables de tipo BluetoothSerial. Estas variables incluyen funciones que facilitan la conexión Bluetooth y permiten enviar y recibir mensajes entre el microcontrolador (MP) y un dispositivo conectado, creando un chat básico.
 
 Primero, incluimos la librería y declaramos la variable SerialBT de tipo BluetoothSerial. Luego, en el void setup(), inicializamos el puerto serie. Utilizando la función .begin de la librería, nuestro MP creará una red Bluetooth que llamaremos "ESP32 Marc".

@@ -71,7 +71,7 @@ const char* password = "12345678"; // Enter your Password here
 
 -La función handle_root() se llama cuando se accede al servidor web. Esta envía una respuesta, que en este caso será la página web.
 
-###SALIDA POR EL TERMINAL
+SALIDA POR EL TERMINAL
 
 Por el terminal podremos ver información sobre el WiFi y la dirección IP asignada al ESP32. Si se conecta correctamente a la red WiFi, mostrará un mensaje indicando la conexión exitosa y la dirección IP del ESP32.
 ```cpp
@@ -90,5 +90,5 @@ delay(100);
 ```
 
 
-#### Práctica B: Comunicación bluetooth con el móvil
+### Práctica B: Comunicación bluetooth con el móvil
 

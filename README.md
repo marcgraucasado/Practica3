@@ -58,20 +58,20 @@ void handle_root() {
 }
 ```
 
-1. Informe del Funcionamiento, Salida por el Terminal y Visualización en Navegador de la Conexión a la Página Web
+## 1. Informe del Funcionamiento, Salida por el Terminal y Visualización en Navegador de la Conexión a la Página Web
 FUNCIONAMIENTO
 
 El objetivo de este código es establecer un servidor web en un ESP32, en este caso, con mi móvil. Luego, este mostrará una página HTML cuando se acceda a través de un navegador web.
 
-·Primeramente, el ESP32 se conecta a la red WiFi que le damos en el código:
+-Primeramente, el ESP32 se conecta a la red WiFi que le damos en el código:
 const char* ssid = "Iphone de Marc"; // Enter your SSID here
 const char* password = "12345678"; // Enter your Password here
 
-·Creamos un objeto WebServer y se define una ruta. Esta se maneja con la función handle_root().
+-Creamos un objeto WebServer y se define una ruta. Esta se maneja con la función handle_root().
 
-·La función handle_root() se llama cuando se accede al servidor web. Esta envía una respuesta, que en este caso será la página web.
+-La función handle_root() se llama cuando se accede al servidor web. Esta envía una respuesta, que en este caso será la página web.
 
-SALIDA POR EL TERMINAL
+###SALIDA POR EL TERMINAL
 
 Por el terminal podremos ver información sobre el WiFi y la dirección IP asignada al ESP32. Si se conecta correctamente a la red WiFi, mostrará un mensaje indicando la conexión exitosa y la dirección IP del ESP32.
 ```cpp
@@ -90,5 +90,5 @@ delay(100);
 ```
 
 
-##### Práctica B: Comunicación bluetooth con el móvil
+#### Práctica B: Comunicación bluetooth con el móvil
 

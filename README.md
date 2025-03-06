@@ -57,9 +57,8 @@ void handle_root() {
     server.send(200, "text/html", HTML);
 }
 
-## 1. Informe del Funcionamiento, Salida por el Terminal y Visualización en Navegador de la Conexión a la Página Web
-
-### FUNCIONAMIENTO
+1. Informe del Funcionamiento, Salida por el Terminal y Visualización en Navegador de la Conexión a la Página Web
+ FUNCIONAMIENTO
 
 El objetivo de este código es establecer un servidor web en un ESP32, en este caso, con mi móvil. Luego, este mostrará una página HTML cuando se acceda a través de un navegador web.
 

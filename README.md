@@ -64,10 +64,12 @@ FUNCIONAMIENTO
 El objetivo de este código es establecer un servidor web en un ESP32, en este caso, con mi móvil. Luego, este mostrará una página HTML cuando se acceda a través de un navegador web.
 
 -Primeramente, el ESP32 se conecta a la red WiFi que le damos en el código:
+```cpp
 const char* ssid = "Iphone de Marc"; // Enter your SSID here
 const char* password = "12345678"; // Enter your Password here
+```
 
--Creamos un objeto WebServer y se define una ruta. Esta se maneja con la función handle_root().
+-Creamos un objeto WebServer y se define una ruta. Esta se maneja con la función ```cpp handle_root(). ```
 
 -La función handle_root() se llama cuando se accede al servidor web. Esta envía una respuesta, que en este caso será la página web.
 

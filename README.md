@@ -64,7 +64,7 @@ FUNCIONAMIENTO
 El objetivo de este código es establecer un servidor web en un ESP32, en este caso, con mi móvil. Luego, este mostrará una página HTML cuando se acceda a través de un navegador web.
 
 -Primeramente, el ESP32 se conecta a la red WiFi que le damos en el código:
-```cpp
+```
 const char* ssid = "Iphone de Marc"; // Enter your SSID here
 const char* password = "12345678"; // Enter your Password here
 ```

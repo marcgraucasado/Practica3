@@ -17,7 +17,7 @@ const char* password = "12345678"; // Enter your Password here
 WebServer server(80); // Object of WebServer(HTTP port, 80 is default)
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     Serial.println("Try Connecting to ");
     Serial.println(ssid);
 
@@ -100,7 +100,7 @@ delay(100);
 BluetoothSerial SerialBT;
 
 void setup() {
- Serial.begin(115200);
+ Serial.begin(9600);
  SerialBT.begin("ESP32 Marc"); 
  Serial.println("The device started, now you can pair it with bluetooth!");
 }

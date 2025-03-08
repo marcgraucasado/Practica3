@@ -7,52 +7,49 @@
 #### CÓDIGO:  
 
 ```cpp
+#include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
 
-// SSID & Password
-const char* ssid = "Iphone de Marc"; // Enter your SSID here
-const char* password = "12345678"; // Enter your Password here
+// Configurar el ESP32 como Access Point
+const char* ssid = "Renatooo";  // Nombre de la red WiFi
+const char* password = "1234567AB";  // Contraseña de la red
 
-WebServer server(80); // Object of WebServer(HTTP port, 80 is default)
+WebServer server(80);  // Servidor web en el puerto 80
+
+// Declaración de función
+void handle_root();
 
 void setup() {
     Serial.begin(9600);
-    Serial.println("Try Connecting to ");
-    Serial.println(ssid);
 
-    // Connect to your wi-fi modem
-    WiFi.begin(ssid, password);
+    // Configurar ESP32 como Access Point
+    Serial.println("Configurando Access Point...");
+    WiFi.softAP(ssid, password); 
 
-    // Check wi-fi is connected to network
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.print(".");
-    }
-    Serial.println("");
-    Serial.println("WiFi connected successfully");
-    Serial.print("Got IP: ");
-    Serial.println(WiFi.localIP()); // Show ESP32 IP on serial
+    IPAddress IP = WiFi.softAPIP();  // Obtener la IP del ESP32
+    Serial.print("Access Point iniciado con IP: ");
+    Serial.println(IP);
 
-    server.on("/", handle_root);
-    server.begin();
-    Serial.println("HTTP server started");
-    delay(100);
+    server.on("/", handle_root);  // Manejar la página principal
+    server.begin();  // Iniciar servidor web
+    Serial.println("Servidor HTTP iniciado");
 }
 
 void loop() {
-    server.handleClient();
+    server.handleClient();  // Manejar las peticiones web
 }
 
-// HTML & CSS contents displayed on web server
+// Página HTML que se mostrará en el navegador
 String HTML = "<!DOCTYPE html>\
 <html>\
 <body>\
-<h1>My Primera Pagina con ESP32 - Station Mode &#128522;</h1>\
+<h1>ESP32 en Modo Access Point &#128522;</h1>\
+<p>¡Conéctate a este punto de acceso!</p>\
 </body>\
 </html>";
 
-// Handle root url (/)
+// Manejar la petición en "/"
 void handle_root() {
     server.send(200, "text/html", HTML);
 }

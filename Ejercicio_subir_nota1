@@ -1,3 +1,4 @@
+CÓDIGO TEMPERATURA
 Este código configura un servidor BLE, que sería el equivalente a un dispositivo periférico (peripheral) en BLE, 
 esperando que otro dispositivo (como un móvil, otro ESP32, etc.) se conecte a él. En otras palabras, el ESP32 actúa como un servidor que espera conexiones.
 
@@ -7,52 +8,124 @@ esperando que otro dispositivo (como un móvil, otro ESP32, etc.) se conecte a �
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-BLEServer* pServer;
-BLECharacteristic* pCharacteristic;
-bool deviceConnected = false;
+// Define UUIDs for the BLE service and characteristic
+#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
-class MyServerCallbacks : public BLEServerCallbacks {
+// Create pointers for BLE objects
+BLEServer* pServer = NULL;
+BLECharacteristic* pCharacteristic = NULL;
+bool deviceConnected = false;
+bool oldDeviceConnected = false;
+
+// Variables for sensor data (example)
+float temperature = 0;
+unsigned long previousMillis = 0;
+const long interval = 2000;  // Update interval in milliseconds
+
+// Callback class for handling server events
+class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
       deviceConnected = true;
+      Serial.println("Device connected");
     }
 
     void onDisconnect(BLEServer* pServer) {
       deviceConnected = false;
+      Serial.println("Device disconnected");
+    }
+};
+
+// Callback for handling characteristic events
+class CharacteristicCallbacks: public BLECharacteristicCallbacks {
+    void onWrite(BLECharacteristic *pCharacteristic) {
+      std::string value = pCharacteristic->getValue();
+      
+      if (value.length() > 0) {
+        Serial.println("Received data: ");
+        for (int i = 0; i < value.length(); i++) {
+          Serial.print(value[i]);
+        }
+        Serial.println();
+      }
     }
 };
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("Starting BLE application");
 
-  BLEDevice::init("ESP32S3");
+  // Initialize BLE device
+  BLEDevice::init("yeeeee");
+  
+  // Create the BLE Server
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
-  BLEService* pService = pServer->createService(BLEUUID("4fafc201-1fb5-459e-8fcc-c5c9c331914b"));
+
+  // Create the BLE Service
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+
+  // Create a BLE Characteristic
   pCharacteristic = pService->createCharacteristic(
-                      BLEUUID("beb5483e-36e1-4688-b7f5-ea07361b26a8"),
-                      BLECharacteristic::PROPERTY_READ |
-                      BLECharacteristic::PROPERTY_WRITE |
+                      CHARACTERISTIC_UUID,
+                      BLECharacteristic::PROPERTY_READ   |
+                      BLECharacteristic::PROPERTY_WRITE  |
                       BLECharacteristic::PROPERTY_NOTIFY |
                       BLECharacteristic::PROPERTY_INDICATE
                     );
 
+  // Add the descriptor for notifications
   pCharacteristic->addDescriptor(new BLE2902());
+  
+  // Set callback to handle write events
+  pCharacteristic->setCallbacks(new CharacteristicCallbacks());
 
-  // Set security to none
-  // pCharacteristic->setSecurity(BLE_SECURITY_NO_ACCESS);
-
+  // Start the service
   pService->start();
-  BLEAdvertising* pAdvertising = pServer->getAdvertising();
-  pAdvertising->start();
-  Serial.println("Bluetooth device active, waiting for connections...");
+
+  // Start advertising
+  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+  pAdvertising->setMinPreferred(0x06);  // helps with iPhone connections issue
+  pAdvertising->setMinPreferred(0x12);
+  BLEDevice::startAdvertising();
+  
+  Serial.println("BLE service started. Waiting for a client connection...");
 }
 
 void loop() {
-  if (deviceConnected) {
-    if (Serial.available()) {
-      pCharacteristic->setValue((uint8_t*)Serial.read(), 1);
+  unsigned long currentMillis = millis();
+  
+  // Simulate sensor reading and update value periodically
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    
+    // Simulate temperature change
+    temperature = random(2000, 3000) / 100.0;
+    
+    // If a device is connected, update the characteristic value
+    if (deviceConnected) {
+      String tempStr = String(temperature, 2);
+      pCharacteristic->setValue(tempStr.c_str());
       pCharacteristic->notify();
+      Serial.print("Temperature: ");
+      Serial.println(tempStr);
     }
   }
-}
 
+  // Handle connection events
+  if (!deviceConnected && oldDeviceConnected) {
+    delay(500); // Give the Bluetooth stack time to get ready
+    pServer->startAdvertising(); // Restart advertising
+    Serial.println("Started advertising again");
+    oldDeviceConnected = deviceConnected;
+  }
+  
+  // If we've connected to a device
+  if (deviceConnected && !oldDeviceConnected) {
+    oldDeviceConnected = deviceConnected;
+  }
+  
+  delay(10); // Small delay for stability
+}

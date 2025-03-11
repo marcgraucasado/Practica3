@@ -1,4 +1,4 @@
-# PR3-Marc  
+# PR3-MarcGrau  
 
 ## PRÁCTICA 3: WIFI y BLUETOOTH  
 
